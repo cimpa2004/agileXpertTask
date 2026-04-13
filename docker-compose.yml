@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: agilexpert-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: agilexperttask
+      POSTGRES_USER: agile
+      POSTGRES_PASSWORD: agile
+    ports:
+      - "5433:5432"
+    volumes:
+      - agilexpert_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  agilexpert_postgres_data:
