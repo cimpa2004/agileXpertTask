@@ -125,13 +125,6 @@ export default function MenuManager() {
 
         <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} alignItems="flex-start">
           <Button variant="contained" onClick={openCreateMenuDialog}>Menü létrehozása</Button>
-          <Button
-            variant="outlined"
-            disabled={!selectedMenu?.id}
-            onClick={() => createSubmenuMutation.mutate({ parentMenuId: selectedMenu?.id, name: `${selectedMenu?.name ?? 'Menü'} almenü` })}
-          >
-            Almenü létrehozása
-          </Button>
         </Stack>
 
         <Table size="small">
@@ -236,9 +229,21 @@ export default function MenuManager() {
         ) : null}
       </CardContent>
 
-      <Dialog open={menuDialogOpen} onClose={() => setMenuDialogOpen(false)} fullWidth maxWidth="sm">
+      <Dialog
+        open={menuDialogOpen}
+        onClose={() => setMenuDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>{editingMenu ? 'Menü szerkesztése' : 'Új menü'}</DialogTitle>
-        <DialogContent sx={{ pt: 1 }}>
+        <DialogContent
+          sx={{
+            pt: '12px !important',
+            '& .MuiFormControl-root:first-of-type': {
+              mt: 0
+            }
+          }}
+        >
           <TextField label="Név" value={menuName} onChange={(event) => setMenuName(event.target.value)} fullWidth />
         </DialogContent>
         <DialogActions>
@@ -260,16 +265,52 @@ export default function MenuManager() {
         </DialogActions>
       </Dialog>
 
-      <Dialog open={itemDialogOpen} onClose={() => setItemDialogOpen(false)} fullWidth maxWidth="sm">
+      <Dialog
+        open={itemDialogOpen}
+        onClose={() => setItemDialogOpen(false)}
+        fullWidth
+        maxWidth="sm"
+      >
         <DialogTitle>Menüelem hozzáadása</DialogTitle>
-        <DialogContent sx={{ pt: 1, display: 'grid', gap: 2 }}>
+        <DialogContent
+          sx={{
+            pt: '12px !important',
+            display: 'grid',
+            gap: 2,
+            '& .MuiFormControl-root:first-of-type': {
+              mt: 0
+            }
+          }}
+        >
           <TextField label="Név" value={itemForm.name} onChange={(event) => setItemForm((state) => ({ ...state, name: event.target.value }))} fullWidth />
           <TextField select label="Típus" value={itemForm.type} onChange={(event) => setItemForm((state) => ({ ...state, type: event.target.value }))} fullWidth>
             <MenuItem value="app">Alkalmazás</MenuItem>
             <MenuItem value="shortcut">Parancsikon</MenuItem>
           </TextField>
-          <TextField label="Ikon ID" value={itemForm.iconId} onChange={(event) => setItemForm((state) => ({ ...state, iconId: event.target.value }))} fullWidth helperText={`Elérhető ikonok: ${(iconsQuery.data ?? []).map((icon) => icon.name).join(', ') || 'nincs'}`} />
-          <TextField label="Alkalmazás ID" value={itemForm.applicationId} onChange={(event) => setItemForm((state) => ({ ...state, applicationId: event.target.value }))} fullWidth helperText={`Elérhető alkalmazások: ${applications.map((application) => `${application.name} (${application.id})`).join(', ') || 'nincs'}`} />
+          <TextField
+            select
+            label="Ikon"
+            value={itemForm.iconId}
+            onChange={(event) => setItemForm((state) => ({ ...state, iconId: event.target.value }))}
+            fullWidth
+            helperText={(iconsQuery.data ?? []).length ? 'Válassz ikont.' : 'Nincs elérhető ikon.'}
+          >
+            {(iconsQuery.data ?? []).map((icon) => (
+              <MenuItem key={icon.id} value={icon.id}>{icon.name} ({icon.id})</MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            select
+            label="Alkalmazás"
+            value={itemForm.applicationId}
+            onChange={(event) => setItemForm((state) => ({ ...state, applicationId: event.target.value }))}
+            fullWidth
+            helperText={applications.length ? 'Válassz alkalmazást.' : 'Nincs elérhető alkalmazás.'}
+          >
+            {applications.map((application) => (
+              <MenuItem key={application.id} value={application.id}>{application.name} ({application.id})</MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setItemDialogOpen(false)}>Mégse</Button>

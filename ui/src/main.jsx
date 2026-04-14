@@ -18,7 +18,18 @@ const theme = createTheme({
     },
     background: {
       default: '#08111f',
-      paper: 'rgba(15, 23, 42, 0.82)'
+      paper: '#0f172a'
+    }
+  },
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#0f172a',
+          backgroundImage: 'none',
+          opacity: 1
+        }
+      }
     }
   },
   typography: {

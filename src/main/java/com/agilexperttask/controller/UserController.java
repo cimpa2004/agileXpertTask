@@ -1,6 +1,7 @@
 package com.agilexperttask.controller;
 
 import com.agilexperttask.dto.UserRequest;
+import com.agilexperttask.dto.UserResponse;
 import com.agilexperttask.model.Application;
 import com.agilexperttask.model.Menu;
 import com.agilexperttask.model.Theme;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -48,19 +50,21 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserAccount> list() {
-        return userAccountRepository.findAll();
+    public List<UserResponse> list() {
+        return userAccountRepository.findAll().stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserAccount create(@RequestBody UserRequest request) {
-        return save(new UserAccount(), request);
+    public UserResponse create(@RequestBody UserRequest request) {
+        return toResponse(save(new UserAccount(), request));
     }
 
     @PutMapping("/{id}")
-    public UserAccount update(@PathVariable String id, @RequestBody UserRequest request) {
-        return save(userAccountRepository.findById(id).orElseThrow(), request);
+    public UserResponse update(@PathVariable String id, @RequestBody UserRequest request) {
+        return toResponse(save(userAccountRepository.findById(id).orElseThrow(), request));
     }
 
     @DeleteMapping("/{id}")
@@ -114,5 +118,20 @@ public class UserController {
         return applicationRepository.findById(idOrName)
                 .or(() -> applicationRepository.findByName(idOrName))
                 .orElseThrow(() -> new IllegalArgumentException("Unknown application: " + idOrName));
+    }
+
+    private UserResponse toResponse(UserAccount user) {
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getMainMenu() == null ? null : user.getMainMenu().getId(),
+                user.getActiveWallpaper() == null ? null : user.getActiveWallpaper().getId(),
+                user.getActiveTheme() == null ? null : user.getActiveTheme().getId(),
+                user.getInstalledApplications() == null
+                        ? List.of()
+                        : user.getInstalledApplications().stream()
+                            .map(Application::getId)
+                            .collect(Collectors.toList())
+        );
     }
 }

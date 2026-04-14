@@ -1,5 +1,6 @@
 package com.agilexperttask.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -14,6 +15,7 @@ public class Wallpaper extends BaseEntity {
     private String imageUrl;
 
     @ManyToOne
+    @JsonIgnoreProperties({"wallpapers", "installedApplications", "mainMenu", "activeWallpaper", "activeTheme"})
     private UserAccount owner;
 
     public String getName() {

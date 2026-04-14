@@ -137,13 +137,18 @@ export default function App() {
             { name: 'name', label: 'Név' },
             { name: 'description', label: 'Leírás', multiline: true },
             { name: 'category', label: 'Kategória' },
-            { name: 'iconId', label: 'Ikon ID', helperText: `Elérhető ikonok: ${(iconsQuery.data ?? []).map((icon) => icon.name).join(', ') || 'nincs'}` },
+            {
+              name: 'iconId',
+              label: 'Ikon',
+              options: (iconsQuery.data ?? []).map((icon) => ({ value: icon.id, label: `${icon.name} (${icon.id})` })),
+              helperText: (iconsQuery.data ?? []).length ? 'Válassz ikont.' : 'Nincs elérhető ikon.'
+            },
             { name: 'launchTarget', label: 'Indítási cél' }
           ]} /> : null}
           {tab === 3 ? <SimpleCatalogManager title="Ikonok" subtitle="Új ikonok létrehozása és módosítása." queryKey={['icons']} endpoint="/icons" fields={[
             { name: 'name', label: 'Név' },
             { name: 'glyph', label: 'Glyph' },
-            { name: 'color', label: 'Szín' }
+            { name: 'color', label: 'Szín', type: 'color' }
           ]} /> : null}
           {tab === 4 ? <SimpleCatalogManager title="Háttérképek" subtitle="Háttérképek hozzáadása, kiválasztása és módosítása." queryKey={['wallpapers']} endpoint="/wallpapers" fields={[
             { name: 'name', label: 'Név' },
@@ -151,9 +156,9 @@ export default function App() {
           ]} /> : null}
           {tab === 5 ? <SimpleCatalogManager title="Arculatok" subtitle="Színpaletták és megjelenési profilok kezelése." queryKey={['themes']} endpoint="/themes" fields={[
             { name: 'name', label: 'Név' },
-            { name: 'primaryColor', label: 'Elsődleges szín' },
-            { name: 'secondaryColor', label: 'Másodlagos szín' },
-            { name: 'accentColor', label: 'Emelés színe' }
+            { name: 'primaryColor', label: 'Elsődleges szín', type: 'color' },
+            { name: 'secondaryColor', label: 'Másodlagos szín', type: 'color' },
+            { name: 'accentColor', label: 'Emelés színe', type: 'color' }
           ]} /> : null}
         </Stack>
       </Container>

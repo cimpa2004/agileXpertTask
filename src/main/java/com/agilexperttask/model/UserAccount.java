@@ -1,6 +1,7 @@
 package com.agilexperttask.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinTable;
@@ -28,6 +29,7 @@ public class UserAccount extends BaseEntity {
     private List<Application> installedApplications = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties({"owner"})
     private List<Wallpaper> wallpapers = new ArrayList<>();
 
     @ManyToOne
