@@ -113,17 +113,6 @@ export default function App() {
             <StatsCard label="Arculatok" value={summary?.themeCount ?? themesQuery.data?.length ?? 0} />
           </Box>
 
-          {summary?.highlights ? (
-            <Paper elevation={0} sx={{ p: 2.5, border: '1px solid rgba(148, 163, 184, 0.16)', backgroundColor: 'rgba(15, 23, 42, 0.68)' }}>
-              <Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>Rövid összegzés</Typography>
-              <Stack spacing={1}>
-                {summary.highlights.map((highlight) => (
-                  <Typography key={highlight} variant="body2" color="text.secondary">{highlight}</Typography>
-                ))}
-              </Stack>
-            </Paper>
-          ) : null}
-
           <Paper elevation={0} sx={{ border: '1px solid rgba(148, 163, 184, 0.16)', backgroundColor: 'rgba(15, 23, 42, 0.55)' }}>
             <Tabs value={tab} onChange={(_, nextTab) => setTab(nextTab)} variant="scrollable" scrollButtons="auto">
               <Tab label="Felhasználók" />
