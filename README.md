@@ -7,7 +7,7 @@ Smart device operating system domain model with a Spring Boot backend, React + R
 Run the database first:
 
 ```bash
-docker compose up -d --force-recreate postgres
+docker compose up -d postgres
 ```
 
 PostgreSQL is exposed on `localhost:5433` to avoid conflicts with any local Postgres already using `5432`.
@@ -31,7 +31,3 @@ npm run dev
 ```
 
 Frontend base URL: `http://localhost:5173`
-
-## Demo data
-
-The backend seeds default demo data on startup and exposes a simulation endpoint at `POST /api/dashboard/simulate`.
