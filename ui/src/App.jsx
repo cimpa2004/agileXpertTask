@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { Alert, Box, Button, Container, Grid, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { Alert, Box, Button, Container, Paper, Stack, Tab, Tabs, Typography } from '@mui/material';
 import { useState } from 'react';
 import { api } from './api';
 import MenuManager from './components/MenuManager';
@@ -80,10 +80,7 @@ export default function App() {
               <Box>
                 <Typography variant="overline" color="primary.light" sx={{ letterSpacing: 2 }}>agileXpertTask</Typography>
                 <Typography variant="h3" sx={{ fontWeight: 800, maxWidth: 900 }}>
-                  Smart device OS felhasználókhoz, menükhöz és megjelenési profilokhoz.
-                </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 880, mt: 1.5 }}>
-                  React Query-vel lekért adatok, MUI-ra épített kezelőfelület, és egy szimuláció gomb, amely feltölti a demo adatokat a backendből.
+                  Smart device OS
                 </Typography>
               </Box>
 
@@ -91,23 +88,30 @@ export default function App() {
                 <Button variant="contained" size="large" onClick={() => simulateMutation.mutate()}>
                   Szimuláció indítása
                 </Button>
-                <Button variant="outlined" size="large" onClick={() => dashboardQuery.refetch()}>
-                  Státusz frissítése
-                </Button>
               </Stack>
 
               {simulateMutation.isError ? <Alert severity="error">A szimuláció frissítése nem sikerült.</Alert> : null}
             </Stack>
           </Paper>
 
-          <Grid container spacing={2.5}>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Felhasználók" value={summary?.userCount ?? usersQuery.data?.length ?? 0} /></Grid>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Menük" value={summary?.menuCount ?? menusQuery.data?.length ?? 0} /></Grid>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Alkalmazások" value={summary?.applicationCount ?? applicationsQuery.data?.length ?? 0} /></Grid>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Ikonok" value={summary?.iconCount ?? iconsQuery.data?.length ?? 0} /></Grid>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Háttérképek" value={summary?.wallpaperCount ?? wallpapersQuery.data?.length ?? 0} /></Grid>
-            <Grid item xs={12} sm={6} md={4}><StatsCard label="Arculatok" value={summary?.themeCount ?? themesQuery.data?.length ?? 0} /></Grid>
-          </Grid>
+          <Box
+            sx={{
+              display: 'grid',
+              gap: 2.5,
+              gridTemplateColumns: {
+                xs: '1fr',
+                sm: 'repeat(2, minmax(0, 1fr))',
+                md: 'repeat(3, minmax(0, 1fr))'
+              }
+            }}
+          >
+            <StatsCard label="Felhasználók" value={summary?.userCount ?? usersQuery.data?.length ?? 0} />
+            <StatsCard label="Menük" value={summary?.menuCount ?? menusQuery.data?.length ?? 0} />
+            <StatsCard label="Alkalmazások" value={summary?.applicationCount ?? applicationsQuery.data?.length ?? 0} />
+            <StatsCard label="Ikonok" value={summary?.iconCount ?? iconsQuery.data?.length ?? 0} />
+            <StatsCard label="Háttérképek" value={summary?.wallpaperCount ?? wallpapersQuery.data?.length ?? 0} />
+            <StatsCard label="Arculatok" value={summary?.themeCount ?? themesQuery.data?.length ?? 0} />
+          </Box>
 
           {summary?.highlights ? (
             <Paper elevation={0} sx={{ p: 2.5, border: '1px solid rgba(148, 163, 184, 0.16)', backgroundColor: 'rgba(15, 23, 42, 0.68)' }}>
